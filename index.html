@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock Paper Scissors</title>
+    </head>
+    <body>
+        <script>
+            const possiblePlays = ["Rock", "Paper", "Scissors"];
+
+            function computerPlay() {
+                return possiblePlays[Math.floor(Math.random() * possiblePlays.length)]; 
+            }
+            
+            function playRound(playerSelection, computerSelection) {
+                const caseEditedPlayerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.slice(1).toLowerCase();    // change so only first letter is uppercase
+                
+                if (caseEditedPlayerSelection == computerSelection) {
+                    return `Tie! Both Sides Played ${computerSelection}`;
+                } else if (caseEditedPlayerSelection == "Rock") {
+                    if (computerSelection == "Paper") {
+                        return "You Lose! Paper beats Rock";
+                    } else {
+                        return "You Win! Rock beats Scissors";
+                    }
+                } else if (caseEditedPlayerSelection == "Scissors") {
+                    if (computerSelection == "Rock") {
+                        return "You Lose! Rock beats Scissors";
+                    } else {
+                        return "You Win! Scissors beats Paper";
+                    }
+                } else if (caseEditedPlayerSelection == "Paper") {
+                    if (computerSelection == "Scissors") {
+                        return "You Lose! Scissors beats Paper";
+                    } else {
+                        return "You Win! Paper beats Rock";
+                    }
+                } else {
+                    return "This is an invalid play! Please type again";
+                }
+            }
+
+            function game() {
+                let result;
+                let playerSelection;
+                let playerScore = 0;
+                let computerScore = 0;
+                for (let i = 0; i < 5; i++) {
+                    playerSelection = prompt(`Round ${i + 1}: What is your play?`);
+                    result = playRound(playerSelection, computerPlay());
+                    if (result.includes("Win")) {
+                        playerScore++;
+                    } else if (result.includes("Lose")) {
+                        computerScore++;
+                    } else if (result.includes("Tie")) {
+
+                    } else {
+                        i--;
+                    }
+                    console.log(result);
+                    console.log(`Current Score is ${playerScore} : ${computerScore}`);
+                }
+                if (playerScore > computerScore) {
+                    console.log("You Win!");
+                } else if (playerScore < computerScore) {
+                    console.log("You Lose!");
+                } else {
+                    console.log("You Tie");
+                }
+            }
+
+            game();
+        </script>
+    </body>
+</html>
