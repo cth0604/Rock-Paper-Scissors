@@ -4,11 +4,55 @@
         <title>Rock Paper Scissors</title>
     </head>
     <body>
+        <div class="result">
+            <p class="resultDisplay">Press a Button to Start!</p>
+        </div>
+        <div class="buttons">
+            <button class="button rock">Rock</button>
+            <button class="button paper">Paper</button>
+            <button class="button scissors">Scissors</button>
+        </div>
+        <div class="scoreboard">
+            <p class="score">0 : 0</p>
+        </div>
+        <div class="replayDiv">
+            <button class="replay">Replay</button>
+        </div>
+
         <script>
             const possiblePlays = ["Rock", "Paper", "Scissors"];
+            let playerScore = 0;
+            let computerScore = 0;
 
             function computerPlay() {
                 return possiblePlays[Math.floor(Math.random() * possiblePlays.length)]; 
+            }
+
+            function updateScore() {
+                const div = document.querySelector('.scoreboard');
+                div.firstElementChild.textContent = `${playerScore} : ${computerScore}`;
+            }
+
+            function printAndRecordResult(result) {
+                const p = document.querySelector('.resultDisplay');
+                let textContent;
+                if (result.includes("Win")) {
+                    playerScore++;
+                    textContent = (playerScore == 5) ? "You Win!" : result;
+                } else if (result.includes("Lose")) {
+                    computerScore++;
+                    textContent = (computerScore == 5) ? "You Lose..." : result;
+                } else {
+                    textContent = result;
+                }
+                p.textContent = textContent;
+                updateScore();
+            }
+
+            function callPlayRound(e) {
+                if (playerScore < 5 && computerScore < 5) {
+                    printAndRecordResult(playRound(e.target.classList[1], computerPlay()));
+                }
             }
             
             function playRound(playerSelection, computerSelection) {
@@ -39,36 +83,23 @@
                 }
             }
 
-            function game() {
-                let result;
-                let playerSelection;
-                let playerScore = 0;
-                let computerScore = 0;
-                for (let i = 0; i < 5; i++) {
-                    playerSelection = prompt(`Round ${i + 1}: What is your play?`);
-                    result = playRound(playerSelection, computerPlay());
-                    if (result.includes("Win")) {
-                        playerScore++;
-                    } else if (result.includes("Lose")) {
-                        computerScore++;
-                    } else if (result.includes("Tie")) {
-
-                    } else {
-                        i--;
-                    }
-                    console.log(result);
-                    console.log(`Current Score is ${playerScore} : ${computerScore}`);
-                }
-                if (playerScore > computerScore) {
-                    console.log("You Win!");
-                } else if (playerScore < computerScore) {
-                    console.log("You Lose!");
-                } else {
-                    console.log("You Tie");
-                }
+            function reset() {
+                playerScore = 0;
+                computerScore = 0;
+                const score = document.querySelector('.scoreboard');
+                const result = document.querySelector('.resultDisplay');
+                score.firstElementChild.textContent = '0 : 0';
+                result.textContent = 'Press a Button to Start!';
+                console.log('hello');
             }
 
-            game();
+            const buttons = document.querySelectorAll('.button');
+            buttons.forEach((button) => {
+                button.addEventListener('click', callPlayRound)
+            });
+
+            const replayButton = document.querySelector('.replay');
+            replayButton.addEventListener('click', reset);
         </script>
     </body>
 </html>
